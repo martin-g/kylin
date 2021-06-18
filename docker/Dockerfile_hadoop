@@ -20,6 +20,7 @@ ARG BASE_IMAGE=centos:7.9.2009
 FROM $BASE_IMAGE
 
 ARG ARCH=x86_64
+ARG JDK_ARCH=x64
 
 ENV HIVE_VERSION 1.2.1
 ENV HADOOP_VERSION 2.7.0
@@ -51,8 +52,8 @@ RUN yum -y install lsof.$ARCH wget.$ARCH tar.$ARCH git which.$ARCH net-tools.$AR
 #install mysql
 RUN wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm \
     && rpm -Uvh mysql80-community-release-el7-3.noarch.rpm \
-    && yum-config-manager --disable mysql80-community \
-    && yum-config-manager --enable mysql57-community \
+    && yum-config-manager --enable mysql80-community \
+    && yum-config-manager --disable mysql57-community \
     && yum install -y mysql-community-server.$ARCH mysql-community-client.$ARCH
 
 # install mvn
@@ -66,9 +67,9 @@ RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - \
     && yum install -y nodejs
 
 # setup jdk
-RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz" \
-    && tar -zxvf /home/admin/jdk-8u141-linux-x64.tar.gz \
-    && rm -f /home/admin/jdk-8u141-linux-x64.tar.gz
+RUN wget --no-cookies --no-check-certificate "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jdk_{$JDK_ARCH}_linux_hotspot_8u292b10.tar.gz" \
+    && tar -zxvf /home/admin/OpenJDK8U-jdk_* \
+    && rm -f /home/admin/OpenJDK8U-jdk_{$JDK_ARCH}_linux_hotspot_8u292b10.tar.gz
 
 # setup hadoop
 RUN wget https://archive.apache.org/dist/hadoop/core/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz \
