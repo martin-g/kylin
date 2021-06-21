@@ -30,7 +30,7 @@ mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid -u root
 if [ ! -f "/home/admin/first_run" ]
 then
     mysql_init_password=`cat /var/log/mysqld.log |grep -Po '(?<=A temporary password is generated for root@localhost: )\S+'`
-    mysql --connect-expired-password -u root -p$mysql_init_password -e "set global validate_password_policy=0;set global validate_password_length=6;alter user user() identified by '123456';"
+    mysql --connect-expired-password -u root -p$mysql_init_password -e "set global validate_password.policy=0;set global validate_password_length=6;alter user user() identified by '123456';"
     mysql -uroot -p123456 -e "grant all privileges on root.* to root@'%' identified by '123456';"
 fi
 
