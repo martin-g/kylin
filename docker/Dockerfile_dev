@@ -16,10 +16,11 @@
 #
 
 # Docker image for apache kylin, based on the Hadoop image
-FROM hadoop2.7-all-in-one
+ARG BASE_IMAGE=hadoop2.7-all-in-one
+FROM ${BASE_IMAGE}
 
 ## for dev
-ENV KYLIN_VERSION 3.1.0-SNAPSHOT
+ENV KYLIN_VERSION 3.1.3-SNAPSHOT
 ENV KYLIN_HOME /home/admin/apache-kylin-$KYLIN_VERSION-bin
 # Copy compiled Kylin from local
 COPY apache-kylin-$KYLIN_VERSION-bin.tar.gz /home/admin/
